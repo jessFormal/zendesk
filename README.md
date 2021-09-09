@@ -16,6 +16,10 @@ A system where a customer can search for ticket or customer with relevant fields
 ```bash
 ./gradlew run --args='src/main/resources/users.json src/main/resources/tickets.json'
 ```
+If gradlew cannot be executed please run:
+```bash
+chmod +x gradlew
+```
 Note: Must pass in two files, where the first argument is user list and second argument is ticket list.
 
 This will start up a new interactive CLI.
