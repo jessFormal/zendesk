@@ -35,23 +35,23 @@ Type 'quit' to exit at any time, Press 'Enter' to continue
   1
   2
   quit
-Enter your choice: Ã¢€‹
+Enter your choice:
 ```
 The 1,2, quit near the bottom is letting the user know what the choices are in that moment.
 
 When entering key and value it will look like this:
 ```
-Enter your choice: Ã¢€‹1
+Enter your choice:
 Select 1) Users or 2) Tickets
 
   1
   2
   quit
-Enter your choice: Ã¢€‹1
+Enter your choice:
 Enter Search Term 
- Ã¢€‹_id
+_id
 Enter Search Value 
-[-1]: Ã¢€‹
+[-1]:
 
 ```
 The -1 in this scenario depicts the default value which will be entered if an empty string is passed.
