@@ -157,6 +157,7 @@ public class ZendeskSystem {
 			createUserOrTicket(array, type);
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
+			quitApplication();
 		}
 		sortList(type);
 	}
@@ -169,7 +170,7 @@ public class ZendeskSystem {
 			} else if(type.equals(ZendeskSystem.TYPE_USER)) {
 				users.add(UserUtils.createUser(object));
 			} else {
-				System.out.println("Error: Unknown Type: "+object);
+				System.err.println("Error: Unknown Type: "+object);
 			}
 		}
 	}
@@ -180,7 +181,7 @@ public class ZendeskSystem {
 		} else if (type.equals(ZendeskSystem.TYPE_USER)) {
 			Collections.sort(users, new SortByUserId());
 		} else {
-			System.out.println("Error: Unknown Type Will Not Sort.");
+			System.err.println("Error: Unknown Type Will Not Sort.");
 		}
 	}
 	

@@ -1,7 +1,6 @@
 package au.zendesk.test;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.json.simple.JSONArray;
