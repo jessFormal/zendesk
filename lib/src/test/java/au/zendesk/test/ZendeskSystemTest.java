@@ -107,6 +107,13 @@ public class ZendeskSystemTest {
 	}
 	
 	@Test
+	public void searchUsers_EmptyResult() {
+		List<String> actual = zendeskSystem.searchUsers(User.Field.ID.get(), "1432");
+		
+		assertTrue(actual.isEmpty());
+	}
+	
+	@Test
 	public void getTicketsWithAssigneeId() {
 		List<String> actual = zendeskSystem.getTicketsWithAssigneeId("2");
 		List<String> expected = Arrays.asList("A Catastrophe in Korea (North)");
@@ -187,6 +194,14 @@ public class ZendeskSystemTest {
 				u2.getName()));
 		
 		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void searchTickets_EmptyResult() {
+		List<String> actual = zendeskSystem.searchTickets(
+				Ticket.Field.TAGS.get(), "Nothing");
+				
+		assertTrue(actual.isEmpty());
 	}
 	
 	@Test
