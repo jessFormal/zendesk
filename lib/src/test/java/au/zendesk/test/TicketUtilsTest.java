@@ -64,6 +64,30 @@ public class TicketUtilsTest {
 		String expectedCreatedAt = "2016-04-28T11:19:34-10:00";
 		String expectedType = "incident";
 		Long expectedAssigneeId = 5L;
+		String[] tags = new String[] {"Fédératéd Statés Of Micronésia", "Down Under"};
+		Set<String> expectedTags = new HashSet<>();
+		expectedTags.add("Fédératéd Statés Of Micronésia");
+		expectedTags.add("Down Under");
+		
+		JSONObject obj = createTicketObject(expectedId, expectedSubject, expectedCreatedAt,
+				expectedType, expectedAssigneeId, tags);
+		Ticket ticket = TicketUtils.createTicket(obj);
+		
+		assertEquals(String.valueOf(expectedId), ticket.getId());
+		assertEquals(expectedSubject, ticket.getSubject());
+		assertEquals(expectedCreatedAt, ticket.getCreatedAt());
+		assertEquals(expectedType, ticket.getType());
+		assertEquals(String.valueOf(expectedAssigneeId), ticket.getAssigneeId());
+		assertEquals(expectedTags, ticket.getTags());
+	}
+	
+	@Test
+	public void createTicket_EmptyAssigneeId() {
+		Long expectedId = 100L;
+		String expectedSubject = "Congrats to Woop Woop";
+		String expectedCreatedAt = "2016-04-28T11:19:34-10:00";
+		String expectedType = "incident";
+		Long expectedAssigneeId = null;
 		String[] tags = new String[] {"Ohio", "Down Under"};
 		Set<String> expectedTags = new HashSet<>();
 		expectedTags.add("Ohio");
@@ -77,7 +101,7 @@ public class TicketUtilsTest {
 		assertEquals(expectedSubject, ticket.getSubject());
 		assertEquals(expectedCreatedAt, ticket.getCreatedAt());
 		assertEquals(expectedType, ticket.getType());
-		assertEquals(String.valueOf(expectedAssigneeId), ticket.getAssigneeId());
+		assertEquals(Ticket.EMPTY_VALUE, ticket.getAssigneeId());
 		assertEquals(expectedTags, ticket.getTags());
 	}
 	
@@ -94,11 +118,9 @@ public class TicketUtilsTest {
 	
 	@Test
 	public void getValue_MissingField() {
-		String type = null;
-		
 		JSONObject ticketObject = createTicketObject(null, null, null, 
-				type, null, null);
-		String actual = TicketUtils.getValue(ticketObject, Ticket.Field.TYPE.get());
+				null, null, null);
+		String actual = TicketUtils.getValue(ticketObject, Ticket.Field.ASSIGNEE_ID.get());
 		
 		assertTrue(actual.isEmpty());
 	}
@@ -135,5 +157,16 @@ public class TicketUtilsTest {
 		Set<String> actual = TicketUtils.getTicketTag(ticketObject);
 		
 		assertTrue(actual.isEmpty());
+	}
+	
+	@Test
+	public void getTicketTag_NonUTF8() {
+		String[] tags = new String[] {"Ohio", "Fédératéd Statés Of Micronésia", "American Samoa"};
+		Set<String> expected = new HashSet<String>(Arrays.asList(tags));
+		
+		JSONObject ticketObject = createTicketObject(null, null, null, 
+				null, null, tags);
+		Set<String> actual = TicketUtils.getTicketTag(ticketObject);
+		assertEquals(expected, actual);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -41,9 +42,12 @@ public class TicketUtils {
 		String tagsKey = Ticket.Field.TAGS.get();
 		
 		if (ticketObject.containsKey(tagsKey)) {
-			@SuppressWarnings("unchecked")
-			List<String> tempTags = (List<String>) ticketObject.get(tagsKey);
-			tags = new HashSet<>(tempTags);
+			JSONArray arr = (JSONArray) ticketObject.get(tagsKey);
+			tags = new HashSet<>();
+			for(Object tag : arr) {
+				String val = ZendeskSystemUtils.encodeUTF8(String.valueOf(tag));
+				tags.add(val);
+			}
 		}
 		return tags;
 	}

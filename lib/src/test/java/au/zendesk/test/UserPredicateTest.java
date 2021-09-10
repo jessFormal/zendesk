@@ -46,7 +46,7 @@ public class UserPredicateTest {
 				"Brôôks Burke",
 				"true",
 				"");
-		users = Arrays.asList(u1, u2, u3, u4);
+		users = Arrays.asList(u1, u2, u3, u4, u5);
 	}
 	
 	@Test
@@ -113,7 +113,7 @@ public class UserPredicateTest {
 	}
 	
 	@Test
-	public void filterUsers_NameNonUTF_8() {
+	public void filterUsers_NameNonUTF8() {
 		String key = User.Field.NAME.get();
 		String value = "Brôôks Burke";
 		
@@ -133,7 +133,7 @@ public class UserPredicateTest {
 		List<User> actual = UserPredicate.filter(users, 
 				UserPredicate.search(key, value));
 		
-		List<User> expected = Arrays.asList(u1,u4);
+		List<User> expected = Arrays.asList(u1, u4, u5);
 		
 		assertEquals(expected.toString(), actual.toString());
 	}
@@ -172,7 +172,7 @@ public class UserPredicateTest {
 		List<User> actual = UserPredicate.filter(users, 
 				UserPredicate.search(key, value));
 		
-		List<User> expected = Arrays.asList(u4);
+		List<User> expected = Arrays.asList(u4, u5);
 		
 		assertEquals(expected.toString(), actual.toString());
 	}

@@ -3,7 +3,6 @@ package au.zendesk.test;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,11 +60,11 @@ public class ZendeskSystem {
 	
 	public List<String> searchUsers(String field, String value) {
 		List<String> results = new ArrayList<>();
-		value = ZendeskSystemUtils.encodeUTF8(value);
-		
+		if(! value.isEmpty() ) {
+			value = ZendeskSystemUtils.encodeUTF8(value);
+		}
 		if (isUserFieldValid(field)) {
 			List<User> userResult = filterUsers(field, value);
-			
 			// append ticket subject information for each user
 			for (User user : userResult) {
 				List<String> ticketSubjects = getTicketsWithAssigneeId(
@@ -110,7 +109,9 @@ public class ZendeskSystem {
 	
 	public List<String> searchTickets(String field, String value) {
 		List<String> result = new ArrayList<>();
-		value = ZendeskSystemUtils.encodeUTF8(value);
+		if(! value.isEmpty() ) {
+			value = ZendeskSystemUtils.encodeUTF8(value);
+		}
 		
 		if (isTicketFieldValid(field)) {
 			List<Ticket> ticketResult = filterTickets(field, value);
@@ -119,12 +120,13 @@ public class ZendeskSystem {
 			for(Ticket ticket : ticketResult) {
 				List<User> userResult = filterUsers(User.Field.ID.get(), 
 						ticket.getAssigneeId());
+				String name = "";
 				if (! userResult.isEmpty()) {
-					String name = String.format(Ticket.FORMAT, 
-							Ticket.Field.ASSIGNEE_NAME.get(),
-							userResult.get(0).getName());
-					result.add(ticket + name);
+					name = userResult.get(0).getName();
 				}
+				String nameVal = String.format(Ticket.FORMAT, 
+						Ticket.Field.ASSIGNEE_NAME.get(), name);
+				result.add(ticket + nameVal);
 			}
 		}
 		return result;

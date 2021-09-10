@@ -21,11 +21,13 @@ public class ZendeskSystemTest {
 	public User u2;
 	public User u3;
 	public User u4;
+	public User u5;
 	
 	public List<Ticket> tickets;
 	public Ticket t1;
 	public Ticket t2;
 	public Ticket t3;
+	public Ticket t4;
 	
 	public ZendeskSystem zendeskSystem;
 	
@@ -52,8 +54,13 @@ public class ZendeskSystemTest {
 				"Keanu Reeves",
 				"true",
 				"");
+		u5 = new User(
+				"4",
+				"Brôôks Burke",
+				"true",
+				"");
 		
-		users = Arrays.asList(u1, u2, u3, u4);
+		users = Arrays.asList(u1, u2, u3, u4, u5);
 		
 		t1 = new Ticket("436bf9b0-1147-4c0a-8439-6f79833bff5b",
 				"incident", 
@@ -67,14 +74,20 @@ public class ZendeskSystemTest {
 				"1", 
 				"A Catastrophe in Australia", 
 				new HashSet<String>(Arrays.asList("Ohio", "Mass")));
-		t3 = new Ticket("436bf9b0-1147-430a-8439-6f89833asf33",
+		t3 = new Ticket("436bf9b0-1147-430a-8439-6f89233asf33",
 				"problem", 
 				"2016-04-28T11:19:35-10:00",
 				"1", 
 				"", 
 				new HashSet<String>(Arrays.asList("New York", "Main")));
+		t4 = new Ticket("436bf9b0-1147-430a-8439-333333333333",
+				"problem", 
+				"2016-04-28T11:19:35-10:00",
+				"", 
+				"A Catastrophe in Melbourne", 
+				new HashSet<String>(Arrays.asList("New York")));
 		
-		tickets = Arrays.asList(t1, t2, t3);
+		tickets = Arrays.asList(t1, t2, t3, t4);
 		
 		zendeskSystem = new ZendeskSystem();
 		zendeskSystem.setUsers(users);
@@ -114,6 +127,30 @@ public class ZendeskSystemTest {
 	}
 	
 	@Test
+	public void searchUsers_NonUTF8() {
+		List<String> actual = zendeskSystem.searchUsers(User.Field.NAME.get(), "Brôôks Burke");
+		
+		List<String> expected = Arrays.asList(String.format(
+				User.FORMAT
+				+ User.FORMAT
+				+ User.FORMAT
+				+ User.FORMAT
+				+ "%-15s [%s] %n",
+				Field.ID.get(),
+				u5.getId(),
+				Field.NAME.get(),
+				u5.getName(),
+				Field.VERIFIED.get(),
+				u5.getVerified(),
+				Field.CREATED_AT.get(),
+				u5.getCreatedAt(),
+				Field.TICKETS.get(),
+				""));
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void getTicketsWithAssigneeId() {
 		List<String> actual = zendeskSystem.getTicketsWithAssigneeId("2");
 		List<String> expected = Arrays.asList("A Catastrophe in Korea (North)");
@@ -124,8 +161,8 @@ public class ZendeskSystemTest {
 	@Test
 	public void getTicketsWithAssigneeId_EmptyAssigneeId() {
 		List<String> actual = zendeskSystem.getTicketsWithAssigneeId("-1");
-		
-		assertTrue(actual.isEmpty());
+		List<String> expected = Arrays.asList("A Catastrophe in Melbourne");
+		assertEquals(expected, actual);
 	}
 	
 	@Test
@@ -192,6 +229,37 @@ public class ZendeskSystemTest {
 				t3.getPrintableTag(),
 				Ticket.Field.ASSIGNEE_NAME.get(),
 				u2.getName()));
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void searchTickets_MissingAssigneeId() {
+		System.out.println(zendeskSystem.getTickets());
+		List<String> actual = zendeskSystem.searchTickets(
+				Ticket.Field.ID.get(), "436bf9b0-1147-430a-8439-333333333333");
+		List<String> expected = Arrays.asList(String.format(
+				Ticket.FORMAT
+				+ Ticket.FORMAT
+				+ Ticket.FORMAT
+				+ Ticket.FORMAT
+				+ Ticket.FORMAT
+				+ "%-15s [%s] %n"
+				+ Ticket.FORMAT,
+				Ticket.Field.ID.get(),
+				t4.getId(),
+				Ticket.Field.CREATED_AT.get(),
+				t4.getCreatedAt(),
+				Ticket.Field.TYPE.get(),
+				t4.getType(),
+				Ticket.Field.SUBJECT.get(),
+				t4.getSubject(),
+				Ticket.Field.ASSIGNEE_ID.get(),
+				"",
+				Ticket.Field.TAGS.get(),
+				t4.getPrintableTag(),
+				Ticket.Field.ASSIGNEE_NAME.get(),
+				""));
 		
 		assertEquals(expected, actual);
 	}
