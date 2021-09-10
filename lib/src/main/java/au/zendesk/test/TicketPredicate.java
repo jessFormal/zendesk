@@ -21,7 +21,11 @@ public class TicketPredicate {
 	}
 	
 	public static Predicate<Ticket> search(String key, String value) {
-		return tickets -> tickets.getValue(key).equals(value);
+		if (key.equals(Ticket.Field.ID.get())) {
+			return tickets -> tickets.getValue(key).equals(value);
+		} else {
+			return tickets -> tickets.getValue(key).equalsIgnoreCase(value);	
+		}
 	}
 	
 	public static Predicate<Ticket> searchTags(String value) {

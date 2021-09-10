@@ -21,6 +21,6 @@ public class UserPredicate {
 	}
 	
 	public static Predicate<User> search(String key, String value) {
-		return user -> user.getValue(key).equals(value);
+		return user -> user.getValue(key).equalsIgnoreCase(value);
 	}
 }
