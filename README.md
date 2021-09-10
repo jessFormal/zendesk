@@ -70,3 +70,4 @@ This is due to the CLI library not allowing for empty Strings as an input theref
 - The ticket _id and customer _id are unique values
 - To account for millions of data I chose to use parallelStream(). However I do recognise serial stream() works well for small amounts of data and is normally faster than parallelStream()
 - The fields "tickets" for Users and "assigneeName" for Tickets are not searchable
+- Case sensitive search
