@@ -3,6 +3,7 @@ package au.zendesk.test;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -60,6 +61,7 @@ public class ZendeskSystem {
 	
 	public List<String> searchUsers(String field, String value) {
 		List<String> results = new ArrayList<>();
+		value = ZendeskSystemUtils.encodeUTF8(value);
 		
 		if (isUserFieldValid(field)) {
 			List<User> userResult = filterUsers(field, value);
@@ -108,6 +110,7 @@ public class ZendeskSystem {
 	
 	public List<String> searchTickets(String field, String value) {
 		List<String> result = new ArrayList<>();
+		value = ZendeskSystemUtils.encodeUTF8(value);
 		
 		if (isTicketFieldValid(field)) {
 			List<Ticket> ticketResult = filterTickets(field, value);

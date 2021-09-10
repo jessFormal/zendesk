@@ -16,6 +16,7 @@ public class UserPredicateTest {
 	public User u2;
 	public User u3;
 	public User u4;
+	public User u5;
 	
 	@Before
 	public void setUp() {
@@ -38,6 +39,11 @@ public class UserPredicateTest {
 		u4 = new User(
 				"3",
 				"Keanu Reeves",
+				"true",
+				"");
+		u5 = new User(
+				"4",
+				"Brôôks Burke",
 				"true",
 				"");
 		users = Arrays.asList(u1, u2, u3, u4);
@@ -102,6 +108,19 @@ public class UserPredicateTest {
 				UserPredicate.search(key, value));
 		
 		List<User> expected = Arrays.asList(u2);
+		
+		assertEquals(expected.toString(), actual.toString());
+	}
+	
+	@Test
+	public void filterUsers_NameNonUTF_8() {
+		String key = User.Field.NAME.get();
+		String value = "Brôôks Burke";
+		
+		List<User> actual = UserPredicate.filter(users, 
+				UserPredicate.search(key, value));
+		
+		List<User> expected = Arrays.asList(u5);
 		
 		assertEquals(expected.toString(), actual.toString());
 	}

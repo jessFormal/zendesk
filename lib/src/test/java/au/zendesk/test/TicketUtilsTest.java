@@ -82,92 +82,36 @@ public class TicketUtilsTest {
 	}
 	
 	@Test
-	public void getTicketType() {
+	public void getValue() {
 		String expected = "incident";
 		
 		JSONObject ticketObject = createTicketObject(null, null, null, 
 				expected, null, null);
-		String actual = TicketUtils.getTicketType(ticketObject);
+		String actual = TicketUtils.getValue(ticketObject, Ticket.Field.TYPE.get());
 		
 		assertEquals(expected, actual);
 	}
 	
 	@Test
-	public void getTicketType_MissingField() {
+	public void getValue_MissingField() {
 		String type = null;
 		
 		JSONObject ticketObject = createTicketObject(null, null, null, 
 				type, null, null);
-		String actual = TicketUtils.getTicketType(ticketObject);
+		String actual = TicketUtils.getValue(ticketObject, Ticket.Field.TYPE.get());
 		
 		assertTrue(actual.isEmpty());
 	}
 	
 	@Test
-	public void getTicketSubject() {
-		String expected = "A Catastrophe in Korea (North)";
+	public void getValue_NonUTF8() {
+		String expected = "Vergnügen";
 		
 		JSONObject ticketObject = createTicketObject(null, expected, null, 
 				null, null, null);
-		String actual = TicketUtils.getTicketSubject(ticketObject);
+		String actual = TicketUtils.getValue(ticketObject, Ticket.Field.SUBJECT.get());
 		
 		assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void getTicketSubject_MissingField() {
-		String subject = null;
-		
-		JSONObject ticketObject = createTicketObject(null, subject, null, 
-				null, null, null);
-		String actual = TicketUtils.getTicketSubject(ticketObject);
-		
-		assertTrue(actual.isEmpty());
-	}
-	
-	@Test
-	public void getTicketCreatedAt() {
-		String expected = "2016-04-28T11:19:34-10:00";
-		
-		JSONObject ticketObject = createTicketObject(null, null, expected, 
-				null, null, null);
-		String actual = TicketUtils.getTicketCreatedAt(ticketObject);
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void getTicketCreatedAt_MissingField() {
-		String createdAt = null;
-		
-		JSONObject ticketObject = createTicketObject(null, null, createdAt, 
-				null, null, null);
-		String actual = TicketUtils.getTicketCreatedAt(ticketObject);
-		
-		assertTrue(actual.isEmpty());
-	}
-	
-	@Test
-	public void getTicketId() {
-		Long id = 10L;
-		String expected = id.toString();
-		
-		JSONObject ticketObject = createTicketObject(id, null, null, 
-				null, null, null);
-		String actual = TicketUtils.getTicketId(ticketObject);
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void getTicketId_MissingField() {
-		Long id = null;
-		
-		JSONObject ticketObject = createTicketObject(id, null, null, 
-				null, null, null);
-		String actual = TicketUtils.getTicketId(ticketObject);
-		
-		assertTrue(actual.isEmpty());
 	}
 	
 	@Test
@@ -189,29 +133,6 @@ public class TicketUtilsTest {
 		JSONObject ticketObject = createTicketObject(null, null, null, 
 				null, null, tags);
 		Set<String> actual = TicketUtils.getTicketTag(ticketObject);
-		
-		assertTrue(actual.isEmpty());
-	}
-	
-	@Test
-	public void getTicketAssigneeId() {
-		Long assigneeId = 5L;
-		String expected = assigneeId.toString();
-		
-		JSONObject ticketObject = createTicketObject(null, null, null, 
-				null, assigneeId, null);
-		String actual = TicketUtils.getTicketAssigneeId(ticketObject);
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void getTicketAssigneeId_MissingField() {
-		Long assigneeId = null;
-		
-		JSONObject ticketObject = createTicketObject(null, null, null, 
-				null, assigneeId, null);
-		String actual = TicketUtils.getTicketAssigneeId(ticketObject);
 		
 		assertTrue(actual.isEmpty());
 	}

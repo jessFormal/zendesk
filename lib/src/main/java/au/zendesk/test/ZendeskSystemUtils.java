@@ -1,5 +1,6 @@
 package au.zendesk.test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /*
@@ -46,5 +47,10 @@ public class ZendeskSystemUtils {
 			}
 		}
 		return -1;
+	}
+	
+	public static String encodeUTF8(String input) {
+		byte[] bytes = input.getBytes(StandardCharsets.UTF_8);
+		return new String (bytes, StandardCharsets.UTF_8);
 	}
 }

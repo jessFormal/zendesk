@@ -58,84 +58,33 @@ public class UserUtilsTest {
 	}
 
 	@Test
-	public void getUserId() {
+	public void getValue() {
 		Long id = 1L;
 		String expected = id.toString();
 		
 		JSONObject userObject = createUserObject(null, null, null , id);
-		String actual = UserUtils.getUserId(userObject);
+		String actual = UserUtils.getValue(userObject, User.Field.ID.get());
 		
 		assertEquals(expected, actual);
 	}
 	
 	@Test
-	public void getUserId_MissingField() {
+	public void getValue_MissingField() {
 		Long id = null;
 		
 		JSONObject userObject = createUserObject(null, null, null , id);
-		String actual = UserUtils.getUserId(userObject);
+		String actual = UserUtils.getValue(userObject, User.Field.ID.get());
 		
 		assertTrue(actual.isEmpty());
 	}
 	
 	@Test
-	public void getUserCreatedAt() {
-		String expected = "2016-04-15T05:19:46-10:00";
+	public void getValue_NonUTF8() {
+		String expected = "Vergnügen";
 		
-		JSONObject userObject = createUserObject(null, null, expected, null);
-		String actual = UserUtils.getUserCreatedAt(userObject);
+		JSONObject obj = createUserObject(expected, null, null, null);
+		String actual = TicketUtils.getValue(obj, User.Field.NAME.get());
 		
 		assertEquals(expected, actual);
-	}
-
-	@Test
-	public void getUserCreatedAt_MissingField() {
-		String createdAt = null;
-		
-		JSONObject userObject = createUserObject(null, null, createdAt, null);
-		String actual = UserUtils.getUserCreatedAt(userObject);
-		
-		assertTrue(actual.isEmpty());
-	}
-	
-	@Test
-	public void getUserVerifed() {
-		Boolean verified = true;
-		String expected = verified.toString();
-		
-		JSONObject userObject = createUserObject(null, verified, null, null);
-		String actual = UserUtils.getUserVerified(userObject);
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void getUserVerifed_MissingField() {
-		Boolean verified = null;
-		
-		JSONObject userObject = createUserObject(null, verified, null, null);
-		String actual = UserUtils.getUserVerified(userObject);
-		
-		assertTrue(actual.isEmpty());
-	}
-	
-	@Test
-	public void getUserName() {
-		String expected = "John Smith";
-		
-		JSONObject userObject = createUserObject(expected, null, null, null);
-		String actual = UserUtils.getUserName(userObject);
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void getUserName_MissingField() {
-		String name = null;
-		
-		JSONObject userObject = createUserObject(name, null, null, null);
-		String actual = UserUtils.getUserName(userObject);
-		
-		assertTrue(actual.isEmpty());
 	}
 }
