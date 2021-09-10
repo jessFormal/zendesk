@@ -47,6 +47,7 @@ public class InteractiveWindow{
 		}
 		String userFile = args[0];
 		String ticketsFile = args[1];
+		
 		ZendeskSystem zendeskSystem = new ZendeskSystem(userFile,ticketsFile);
 		InteractiveWindow view = new InteractiveWindow(zendeskSystem);
 		
@@ -63,8 +64,10 @@ public class InteractiveWindow{
 	// Main logic flow
 	public void startZendesk() {
 		while(! quit) {
-			selectMenuOptions();
-			selectSearchType();
+			showMenuOptions();
+			String type = selectSearchType();
+			List<String> res = searchTermAndValue(type);
+			printResult(res);
 		}
 	}
 	
@@ -107,8 +110,9 @@ public class InteractiveWindow{
 	}
 	
 	// Shows options to either search zendesk or list searchable fields
-	// or quit the application
-	public void selectMenuOptions() {
+	// or quit the application. If invalid option or list field option 
+	// is provided will continue to show welcome message.
+	public void showMenuOptions() {
 		boolean nextStep = false;
 		
 		while (! nextStep) {
@@ -133,7 +137,8 @@ public class InteractiveWindow{
 				+ "%s%n",iterateOverFields(zendeskSystem.getTicketSearchableFields()));
 	}
 	
-	private String iterateOverFields(List<String> list) {
+	// Returns a string with each field in a new line
+	public String iterateOverFields(List<String> list) {
 		String result = "";
 		for (String s : list) {
 			result += s + '\n';
@@ -141,29 +146,29 @@ public class InteractiveWindow{
 		return result;
 	}
 	
-	// Shows an option to search user or ticket then allows
-	// user to enter the field and value to search in
-	// returns the result of the search in readable format
-	public void selectSearchType() {
+	// Shows an option to search user or ticket and returns the option
+	public String selectSearchType() {
 		String type = "";
-		
 		while (! type.equals(ZendeskSystem.TYPE_TICKET) 
 				&& ! type.equals(ZendeskSystem.TYPE_USER)) {
 			type = waitForInput(
 			    Arrays.asList(ZendeskSystem.TYPE_USER, ZendeskSystem.TYPE_TICKET, "quit"),
 					String.format("Select 1) Users or 2) Tickets%n"));
 		}
+		return type;
+	}
+	
+	// Ask for Search Term and Value and then activate search
+	public List<String> searchTermAndValue(String type) {
 		String field = waitForInput(null, String.format("Enter Search Term %n"));
 		String value = waitForInputDefaultVal(
 				String.format("Enter Search Value %n"),ZendeskSystem.EMPTY_STRING);
-		List<String> res = searchTicketOrUser(type, field, value);
-		
-		printResult(res);
+		return searchTicketOrUser(type, field, value);
 	}
 	
 	// Search Ticket or User with given field and value
 	// return filtered results
-	private List<String> searchTicketOrUser(String type, String field, String value) {
+	public List<String> searchTicketOrUser(String type, String field, String value) {
 		List<String> res = new ArrayList<>();
 		
 		// Library Text IO CLI does not allow empty input therefore this
@@ -184,7 +189,7 @@ public class InteractiveWindow{
 	}
 	
 	// Print list of results in human readable format
-	private void printResult(List<String> res) {
+	public void printResult(List<String> res) {
 		if (! res.isEmpty() ) {
 			for (String line : res) {
 				textTerminal.printf("%s %n", line);
