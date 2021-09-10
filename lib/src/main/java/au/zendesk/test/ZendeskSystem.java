@@ -116,10 +116,12 @@ public class ZendeskSystem {
 			for(Ticket ticket : ticketResult) {
 				List<User> userResult = filterUsers(User.Field.ID.get(), 
 						ticket.getAssigneeId());
-				String name = String.format(Ticket.FORMAT, 
-						Ticket.Field.ASSIGNEE_NAME.get(), 
-						userResult.get(0).getName());
-				result.add(ticket + name);
+				if (! userResult.isEmpty()) {
+					String name = String.format(Ticket.FORMAT, 
+							Ticket.Field.ASSIGNEE_NAME.get(),
+							userResult.get(0).getName());
+					result.add(ticket + name);
+				}
 			}
 		}
 		return result;
