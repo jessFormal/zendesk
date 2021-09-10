@@ -62,6 +62,8 @@ The -1 in this scenario depicts the default value which will be entered if an em
 This is due to the CLI library not allowing for empty Strings as an input therefore I have chosen to map -1 to empty strings.
 
 ## Assumptions Made and Design Choices:
+- Each ticket will always have _id field populated
+- Each user will always have _id field populated
 - _id and _assignee_id cannot be a negative number.
 - The value "-1" will not appear so it is being used as a variable in the application to distinguish empty values.
 - A ticket only has one assignee ID therefore only one assignee Name
