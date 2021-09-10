@@ -11,12 +11,8 @@ import org.junit.Test;
 
 public class UserPredicateTest {
 	
-	public List<User> users;
-	public User u1;
-	public User u2;
-	public User u3;
-	public User u4;
-	public User u5;
+	private List<User> users;
+	private User u1, u2, u3, u4, u5;
 	
 	@Before
 	public void setUp() {

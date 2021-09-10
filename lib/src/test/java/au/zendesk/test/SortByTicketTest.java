@@ -11,11 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SortByTicketTest {
-	public List<Ticket> tickets;
-	public Ticket t1;
-	public Ticket t2;
-	public Ticket t3;
-	public Ticket t4;
+	private List<Ticket> tickets;
+	private Ticket t1, t2, t3, t4;
 	
 	@Before
 	public void setUp() {

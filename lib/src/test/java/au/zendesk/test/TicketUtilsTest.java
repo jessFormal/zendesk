@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TicketUtilsTest {
-	public ZendeskSystem zendeskSystem;
+	private ZendeskSystem zendeskSystem;
 	
 	@Before
 	public void setup() {

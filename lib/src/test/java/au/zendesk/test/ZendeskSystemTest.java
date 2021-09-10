@@ -16,20 +16,13 @@ import org.junit.Test;
 import au.zendesk.test.User.Field;
 
 public class ZendeskSystemTest {
-	public List<User> users;
-	public User u1;
-	public User u2;
-	public User u3;
-	public User u4;
-	public User u5;
+	private List<User> users;
+	private User u1, u2, u3, u4, u5;
 	
-	public List<Ticket> tickets;
-	public Ticket t1;
-	public Ticket t2;
-	public Ticket t3;
-	public Ticket t4;
+	private List<Ticket> tickets;
+	private Ticket t1, t2, t3, t4;
 	
-	public ZendeskSystem zendeskSystem;
+	private ZendeskSystem zendeskSystem;
 	
 	@Before
 	public void setUp() {
@@ -92,8 +85,8 @@ public class ZendeskSystemTest {
 		zendeskSystem = new ZendeskSystem();
 		zendeskSystem.setUsers(users);
 		zendeskSystem.setTickets(tickets);
-		Collections.sort(users, new SortByUserId());
-		Collections.sort(tickets, new SortByTicketAssigneeId());
+		zendeskSystem.sortList(ZendeskSystem.TYPE_USER);
+		zendeskSystem.sortList(ZendeskSystem.TYPE_TICKET);
 	}
 
 	@Test
@@ -235,7 +228,6 @@ public class ZendeskSystemTest {
 	
 	@Test
 	public void searchTickets_MissingAssigneeId() {
-		System.out.println(zendeskSystem.getTickets());
 		List<String> actual = zendeskSystem.searchTickets(
 				Ticket.Field.ID.get(), "436bf9b0-1147-430a-8439-333333333333");
 		List<String> expected = Arrays.asList(String.format(

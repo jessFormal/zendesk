@@ -10,13 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TicketPredicateTest {
-	public List<Ticket> tickets;
-	public Ticket t1;
-	public Ticket t2;
-	public Ticket t3;
-	public Ticket t4;
-	public Ticket t5;
-	public Ticket t6;
+	private List<Ticket> tickets;
+	private Ticket t1, t2, t3, t4, t5, t6;
 	
 	@Before
 	public void setUp() {
@@ -57,7 +52,7 @@ public class TicketPredicateTest {
 				"A Catastrophe in Brisbane", 
 				new HashSet<String>(Arrays.asList("Victoria","Smallsville","Amsterdam")));
 		
-		tickets = Arrays.asList(t1, t2, t3, t4,	t5, t6);
+		tickets = Arrays.asList(t1, t2, t3, t4,	t5, t6);		
 	}
 	
 	@Test
